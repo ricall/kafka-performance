@@ -1,0 +1,31 @@
+server:
+  port: 8202
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/messages
+    username: admin
+    password: password
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+  cloud:
+    stream:
+      bindings:
+        onMessage-in-0:
+          destination: dev.message
+          binder: kafka
+          group: cloud-consumer
+          consumer:
+            use-native-decoding: true
+      kafka:
+        binder:
+          consumer-properties:
+            key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            auto.offset.reset: earliest
+            max.poll.records: 50

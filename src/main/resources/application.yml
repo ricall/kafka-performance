@@ -1,0 +1,25 @@
+server:
+  port: 8200
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        message-out-0:
+          binder: kafka
+          destination: dev.message
+          producer:
+            partition-count: 6
+            useNativeEncoding: true
+        message-in-0:
+          binder: kafka
+          destination: dev.message
+          group: message-listener
+      kafka:
+        binder:
+          consumer-properties:
+            key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+          producer-properties:
+            key.serializer: org.apache.kafka.common.serialization.StringSerializer
+            value.serializer: org.apache.kafka.common.serialization.StringSerializer
